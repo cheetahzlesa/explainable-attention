@@ -206,8 +206,10 @@ def main(
 
 
 if __name__ == "__main__":
-    OWL_PATH = "/home/pythoninnutshell/Desktop/gabo/gabo/magisterke/diplomovka/pe-malware-ontology-main/example/dataset_8_1000.owl"
-    EXAMPLES_PATH = "/home/pythoninnutshell/Desktop/gabo/gabo/magisterke/diplomovka/pe-malware-ontology-main/example/dataset_8_1000_examples.json"
+    ### Change paths to files 
+    
+    OWL_PATH = "dataset_8_1000.owl"
+    EXAMPLES_PATH = "dataset_8_1000_examples.json"
 
     
     
