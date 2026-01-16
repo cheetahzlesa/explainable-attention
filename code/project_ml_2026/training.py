@@ -10,6 +10,8 @@ import numpy as np
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
+from torch.amp import autocast, GradScaler
+
 
 from tab_transformer import TabTransformer
 from prepare_data import PEMalwareOntologyTabular
@@ -52,9 +54,10 @@ def train_one_epoch(
         optimizer.zero_grad(set_to_none=True)
 
         if amp_enabled:
-            with torch.cuda.amp.autocast():
+            with autocast(device_type="cuda", enabled=(use_amp and device.type == "cuda")):
                 logit = model(x_cat, x_num)
                 loss = loss_fn(logit, y)
+
 
             scaler.scale(loss).backward()
 
@@ -174,9 +177,7 @@ def main(
     tr = torch.utils.data.Subset(ds, tr_idx)
     te = torch.utils.data.Subset(ds, te_idx)
 
-    # DataLoader:
-    # - num_workers=0 is safest with rdflib Graph-based Dataset
-    # - pin_memory helps CPU->GPU transfer
+    
     pin = (device.type == "cuda")
     tr_loader = DataLoader(tr, batch_size=batch_size, shuffle=True, num_workers=0, pin_memory=pin)
     te_loader = DataLoader(te, batch_size=eval_batch_size, shuffle=False, num_workers=0, pin_memory=pin)
@@ -198,7 +199,6 @@ def main(
         mlp_hidden_mult=mlp_hidden_mult,
     ).to(device)
 
-    # Class imbalance
     y_tr = ds.y[tr_idx]
     pos = int((y_tr == 1).sum())
     neg = int((y_tr == 0).sum())
@@ -210,10 +210,8 @@ def main(
 
     optimizer = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=weight_decay)
 
-    # AMP scaler (CUDA only)
-    scaler = torch.cuda.amp.GradScaler(enabled=(use_amp and device.type == "cuda"))
+    scaler = GradScaler(enabled=(use_amp and device.type == "cuda"))
 
-    # Track best
     best_auc = -1.0
     best_epoch = -1
     best_metrics = None
