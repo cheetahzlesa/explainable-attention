@@ -1,0 +1,19 @@
+name: tt_gpu
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pytorch
+  - torchvision
+  - torchaudio
+  - pytorch-cuda=11.8
+  - numpy
+  - scipy
+  - scikit-learn
+  - pandas
+  - rdflib
+  - tqdm
+  - matplotlib 
+  - pip
