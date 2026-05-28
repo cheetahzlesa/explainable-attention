@@ -252,7 +252,7 @@ def main(
 
 if __name__ == "__main__":
     # Change these paths
-    RAW_JSON = "/home/pythoninnutshell/Desktop/gabo/gabo/magisterke/diplomovka/ember_dataset/800000/1/dataset_1_800000_raw.json"
+    RAW_JSON = ""
 
    
     
