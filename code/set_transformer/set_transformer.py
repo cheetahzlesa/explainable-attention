@@ -11,10 +11,9 @@ class SetTransformer(nn.Module):
         self,
         dim_input = 9,
         num_outputs=1,
-        num_inds=32,
         dim_hidden=128,
         num_heads=4,
-        ln=False,
+        ln=False
     ):
         super(SetTransformer, self).__init__()
         
