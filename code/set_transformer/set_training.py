@@ -289,11 +289,7 @@ if __name__ == "__main__":
         "dim_hidden": {
             "values": [128, 256, 512, 1024],
         },
-        "dropout": {
-            "distribution": "uniform",
-            "min": 0.0,
-            "max": 0.5,
-        },
+        
         "epochs": {
             "values": [5, 10, 15, 20]
         },
@@ -303,6 +299,47 @@ if __name__ == "__main__":
 
     },
 }   
+
+
+    bayes_sweep_config = {
+    "method": "bayes",
+    "name" : "stage-2.1-bayes",
+    "metric": {
+        "name": "acc",
+        "goal": "maximize",
+    },
+    "run_cap": 40,
+    "parameters": {
+        "lr": {
+            "distribution": "log_uniform_values",
+            "min": 1e-5,
+            "max": 1e-4,
+        },
+        "epochs": {
+            "values": [10, 15, 20, 25],
+        },
+        "num_heads": {
+            "values": [16, 32, 64],
+        },
+        "batch_size": {
+            "values": [8, 16, 32],
+        },
+        "dim_hidden": {
+            "values": [512, 1024, 2048],
+        },
+        "weight_decay": {
+            "distribution": "log_uniform_values",
+            "min": 1e-8,
+            "max": 1e-6,
+        },
+    },
+}
+
+
+
+
+
+
 
 
     # Initialize the sweep by passing in the config dictionary
