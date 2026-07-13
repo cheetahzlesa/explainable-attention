@@ -17,3 +17,5 @@ dependencies:
   - tqdm
   - matplotlib 
   - pip
+  - pip:
+    - wandb
