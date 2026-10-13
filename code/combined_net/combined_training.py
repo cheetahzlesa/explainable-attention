@@ -310,6 +310,54 @@ if __name__ == "__main__":
     },
 }   
 
+    bayes_sweep_config = {
+    "method": "bayes",
+    "name" : "stage-2.1-bayes",
+    "metric": {
+        "name": "acc",
+        "goal": "maximize",
+    },
+    "run_cap": 40,
+    "parameters": {
+        "lr": {
+            "distribution": "log_uniform_values",
+            "min": 1e-5,	
+            "max": 1e-3
+        },
+        "epochs": {
+          "value": [10, 15, 20, 25]
+        },
+        "set_heads": {
+          "value": [8, 16, 32, 64, 128]
+        },
+        "tab_heads": {
+          "value": [8, 16, 32, 64, 128]
+        },
+        "batch_size": {
+          "value": [4, 8, 16, 32, 64]
+        },
+        "set_hidden": {
+          "value": [64, 128, 256, 512, 1028]
+        },
+        "tab_layers": {
+          "value": [2, 4, 6, 8, 10]
+        },
+        "tab_d_model": {
+          "value": [16, 32, 64, 128, 256]
+        },
+        "weight_decay": {
+            "distribution": "log_uniform_values",
+            "min": 1e-6,
+            "max": 1e-4	
+        },
+        "fusion_hidden": {
+          "value": [64, 128, 256, 512, 1028]
+        },
+        "tab_col_id_dim": {
+          "value": [2, 4, 6, 8, 10]
+        }
+    }
+}
 
 
 
@@ -319,7 +367,7 @@ if __name__ == "__main__":
 
 
     # Initialize the sweep by passing in the config dictionary
-    sweep_id = wandb.sweep(sweep=random_sweep_config, project="transformer-1")
+    sweep_id = wandb.sweep(sweep=bayes_sweep_config, project="transformer-1")
 
     # Start the sweep job
     wandb.agent(sweep_id, function=main)
